@@ -49,7 +49,7 @@ information will be relevant:
 
 <table>
   <tr>
-    <th>Identifier</th><td>view_grades</td>
+    <th>Identifier</th><td>html-view-grades</td>
   </tr>
   <tr>
     <th>Name</th><td>View Grades</td>

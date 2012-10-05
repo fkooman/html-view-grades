@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var apiClientId = 'mygrades';
+    var apiClientId = 'html-view-grades';
     var apiScope = ["grades"];
 
     var authorizeEndpoint   = 'http://localhost/php-oauth/authorize.php';
@@ -7,19 +7,19 @@ $(document).ready(function () {
     var apiEndpoint         = 'http://localhost/php-oauth-grades-rs/api.php';
 
     jso_configure({
-        "mygrades": {
+        "html-view-grades": {
             client_id: apiClientId,
             authorization: authorizeEndpoint
         }
     });
     jso_ensureTokens({
-        "mygrades": apiScope
+        "html-view-grades": apiScope
     });
 
     function renderGradeList(studentId) {
         $.oajax({
             url: apiEndpoint + "/grades/" + studentId,
-            jso_provider: "mygrades",
+            jso_provider: "html-view-grades",
             jso_scopes: apiScope,
             jso_allowia: true,
             dataType: 'json',
@@ -44,7 +44,7 @@ $(document).ready(function () {
     function renderStudentBox() {
         $.oajax({
             url: apiEndpoint + "/grades/",
-            jso_provider: "mygrades",
+            jso_provider: "html-view-grades",
             jso_scopes: apiScope,
             jso_allowia: true,
             dataType: 'json',
@@ -63,7 +63,7 @@ $(document).ready(function () {
     function checkEntitlement() {
         $.oajax({
             url: entitlementEndpoint,
-            jso_provider: "mygrades",
+            jso_provider: "html-view-grades",
             jso_scopes: apiScope,
             jso_allowia: true,
             type: "GET",
