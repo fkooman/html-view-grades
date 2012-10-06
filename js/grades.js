@@ -1,10 +1,5 @@
 $(document).ready(function () {
-    var apiClientId = 'html-view-grades';
     var apiScope = ["grades"];
-
-    var authorizeEndpoint   = 'http://localhost/php-oauth/authorize.php';
-    var entitlementEndpoint = 'http://localhost/php-oauth/api.php/resource_owner/entitlement';
-    var apiEndpoint         = 'http://localhost/php-oauth-grades-rs/api.php';
 
     jso_configure({
         "html-view-grades": {
