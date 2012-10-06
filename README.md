@@ -52,10 +52,10 @@ information will be relevant:
     <th>Identifier</th><td>html-view-grades</td>
   </tr>
   <tr>
-    <th>Name</th><td>View Grades</td>
+    <th>Name</th><td>View Your Grades</td>
   </tr>
   <tr>
-    <th>Description</th><td>This application can be used to view your grades.</td>
+    <th>Description</th><td>Application for students and teachers to view grades.</td>
   </tr>
   <tr>
     <th>Profile</th><td>User-agent-based Application</td>
