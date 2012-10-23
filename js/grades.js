@@ -57,7 +57,7 @@ $(document).ready(function () {
 
     function checkEntitlement() {
         $.oajax({
-            url: entitlementEndpoint,
+            url: attributesEndpoint,
             jso_provider: "html-view-grades",
             jso_scopes: apiScope,
             jso_allowia: true,
@@ -65,7 +65,7 @@ $(document).ready(function () {
             dataType: 'json',
             async: false,
             success: function (data) {
-                if(-1 !== data.entitlement.indexOf("urn:vnd:grades:administration")) {
+                if(data.entitlement && -1 !== data.entitlement.indexOf("urn:vnd:grades:administration")) {
                     // teacher, show list of students
                     renderStudentBox();
                     $("#studentListForm").show();
