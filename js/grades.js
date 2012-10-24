@@ -1,15 +1,15 @@
 $(document).ready(function () {
     var apiScope = ["grades"];
 
-    jso_configure({
-        "html-view-grades": {
-            client_id: apiClientId,
-            authorization: authorizeEndpoint
-        }
-    });
-    jso_ensureTokens({
-        "html-view-grades": apiScope
-    });
+//    jso_configure({
+//        "html-view-grades": {
+//            client_id: apiClientId,
+//            authorization: authorizeEndpoint
+//        }
+//    });
+//    jso_ensureTokens({
+//        "html-view-grades": apiScope
+//    });
 
     function renderGradeList(studentId) {
         $.oajax({
@@ -56,37 +56,48 @@ $(document).ready(function () {
     }
 
     function checkEntitlement() {
-        $.oajax({
-            url: attributesEndpoint,
-            jso_provider: "html-view-grades",
-            jso_scopes: apiScope,
-            jso_allowia: true,
-            type: "GET",
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                if(data.entitlement && -1 !== data.entitlement.indexOf("urn:vnd:grades:administration")) {
-                    // teacher, show list of students
-                    renderStudentBox();
-                    $("#studentListForm").show();
-                    $("a#studentShow").click(function() {
-                        var f = parseForm($('form#studentListForm'));
-                        renderGradeList(f.studentList);
-                    });
-                } else {
-                    // not a teacher, show own grades
-                    renderGradeList("@me");
+        var accessToken = jso_getToken("html-view-grades");
+        if(accessToken) {
+            $.ajax({
+                url: tokenInfoEndpoint + "?access_token=" + accessToken,
+                type: "GET",
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if(!data.attributes || !data.attributes.entitlement || -1 === data.attributes.entitlement.indexOf("urn:vnd:grades:administration")) {
+                        // not a teacher, show own grades
+                        renderGradeList("@me");
+                    } else {
+                        // teacher, show list of students
+                        renderStudentBox();
+                        $("#studentListForm").show();
+                        $("a#studentShow").click(function() {
+                            var f = parseForm($('form#studentListForm'));
+                            renderGradeList(f.studentList);
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    var data = JSON.parse(xhr.responseText);
+                    alert("ERROR: " + data.error_description);
                 }
-            },
-            error: function (xhr) {
-                var data = JSON.parse(xhr.responseText);
-                alert("ERROR: " + data.error_description);
-            }
-        });
+            });
+        }
     }
 
     function initPage() {
+        jso_configure({
+            "html-view-grades": {
+                client_id: apiClientId,
+                authorization: authorizeEndpoint
+            }
+        });
+        jso_ensureTokens({
+            "html-view-grades": apiScope
+        });
+
         checkEntitlement();
     }
+
     initPage();
 });
