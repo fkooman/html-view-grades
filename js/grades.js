@@ -64,7 +64,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    if(!data.attributes || !data.attributes.eduPersonEntitlement || -1 === data.attributes.eduPersonEntitlement.indexOf("urn:vnd:grades:administration")) {
+                    if(!data.attributes || !data.attributes.eduPersonEntitlement || -1 === data.attributes.eduPersonEntitlement.indexOf("urn:x-oauth:entitlement:administration")) {
                         // not a teacher, show own grades
                         renderGradeList("@me");
                     } else {
