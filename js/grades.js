@@ -1,16 +1,6 @@
 $(document).ready(function () {
     var apiScope = ["grades"];
 
-//    jso_configure({
-//        "html-view-grades": {
-//            client_id: apiClientId,
-//            authorization: authorizeEndpoint
-//        }
-//    });
-//    jso_ensureTokens({
-//        "html-view-grades": apiScope
-//    });
-
     function renderGradeList(studentId) {
         $.oajax({
             url: apiEndpoint + "/grades/" + studentId,
@@ -71,7 +61,7 @@ $(document).ready(function () {
                         // teacher, show list of students
                         renderStudentBox();
                         $("#studentListForm").show();
-                        $("a#studentShow").click(function() {
+                        $("select#studentList").bind('change', function() {
                             var f = parseForm($('form#studentListForm'));
                             renderGradeList(f.studentList);
                         });
