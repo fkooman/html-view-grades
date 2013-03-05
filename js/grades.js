@@ -74,7 +74,6 @@ $(document).ready(function () {
                 showGrades(userId, studentList);
             });
         });
-        //event.preventDefault();
     });
 
     function initPage() {
@@ -83,10 +82,13 @@ $(document).ready(function () {
             // show login box
             $("div#container").html($("#authzBox").render());
         } else {
+            // an access token already exists, make sure it is still valid...
+            performLogin();
             hasEntitlement("urn:x-oauth:entitlement:administration", function (hasEntitlement) {
                 if (hasEntitlement) {
                     // get student names
                     getStudents(function (studentList) {
+                        // show grades for the first user
                         showGrades(studentList[0].id, studentList);
                     });
                 } else {

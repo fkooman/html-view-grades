@@ -1,18 +1,16 @@
 # View Grades
 
 ## Introduction
-
 This application makes it possible to view student grades together with the 
-`php-oauth-grades-rs` project. It uses its API.
+[php-oauth-grades-rs](https://github.com/fkooman/php-oauth-grades-rs) project. 
+It uses its API.
 
 ## Screenshots
-
 ![html-view-grades-student](https://github.com/fkooman/html-view-grades/raw/master/docs/html-view-grades-student-screenshot.png)
 
 ![html-view-grades-teacher](https://github.com/fkooman/html-view-grades/raw/master/docs/html-view-grades-teacher-screenshot.png)
 
 ## Installation
-
 This application depends on the following components:
 
 * jQuery
@@ -39,7 +37,7 @@ This is the default configuration:
     var attributesEndpoint = 'http://localhost/php-oauth/api.php/resource_owner/attributes';
     var apiEndpoint        = 'http://localhost/php-oauth-grades-rs/api.php';
 
-For example, for your situation it may need to be this:
+For example, for your situation it may need to be like this:
 
     var apiClientId        = 'html-view-grades';
     var authorizeEndpoint  = 'https://www.example.org/php-oauth/authorize.php';
@@ -55,7 +53,7 @@ information will be relevant:
     <th>Identifier</th><td>html-view-grades</td>
   </tr>
   <tr>
-    <th>Name</th><td>View Your Grades</td>
+    <th>Name</th><td>View Grades</td>
   </tr>
   <tr>
     <th>Description</th><td>Application for students and teachers to view grades.</td>
