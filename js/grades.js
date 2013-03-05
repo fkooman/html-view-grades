@@ -1,92 +1,100 @@
 $(document).ready(function () {
     var apiScope = ["grades"];
 
-    function renderGradeList(studentId) {
-        $.oajax({
-            url: apiEndpoint + "/grades/" + studentId,
-            jso_provider: "html-view-grades",
-            jso_scopes: apiScope,
-            jso_allowia: true,
-            dataType: 'json',
-            success: function (data) {
-                $("#gradeList").html($("#gradeListTemplate").render(data));
-            },
-            error: function (xhr) {
-                var data = JSON.parse(xhr.responseText);
-                alert("ERROR: " + data.error_description);
-            }
-        });
-    }
-
-    function parseForm(formData) {
-        var params = {};
-        $.each(formData.serializeArray(), function (k, v) {
-            params[v.name] = (v.value === '') ? null : v.value;
-        });
-        return params;
-    }
-
-    function renderStudentBox() {
-        $.oajax({
-            url: apiEndpoint + "/grades/",
-            jso_provider: "html-view-grades",
-            jso_scopes: apiScope,
-            jso_allowia: true,
-            dataType: 'json',
-            success: function (data) {
-                $("#studentList").html($("#studentListTemplate").render(data));
-                // show the grades of the first available student
-                renderGradeList(data[0].id);
-            },
-            error: function (xhr) {
-                var data = JSON.parse(xhr.responseText);
-                alert("ERROR: " + data.error_description);
-            }
-        });
-    }
-
-    function checkEntitlement() {
-        var accessToken = jso_getToken("html-view-grades");
-        if(accessToken) {
-            $.ajax({
-                url: tokenInfoEndpoint + "?access_token=" + accessToken,
-                type: "GET",
-                dataType: 'json',
-                async: false,
-                success: function (data) {
-                    if(!data.attributes || !data.attributes.eduPersonEntitlement || -1 === data.attributes.eduPersonEntitlement.indexOf("urn:x-oauth:entitlement:administration")) {
-                        // not a teacher, show own grades
-                        renderGradeList("@me");
-                    } else {
-                        // teacher, show list of students
-                        renderStudentBox();
-                        $("#studentListForm").show();
-                        $("select#studentList").bind('change', function() {
-                            var f = parseForm($('form#studentListForm'));
-                            renderGradeList(f.studentList);
-                        });
-                    }
-                },
-                error: function (xhr) {
-                    var data = JSON.parse(xhr.responseText);
-                    alert("ERROR: " + data.error_description);
-                }
-            });
+    jso_configure({
+        "html-view-grades": {
+            client_id: apiClientId,
+            authorization: authorizeEndpoint
         }
+    });
+
+    function hasEntitlement(entitlement, callback) {
+        var accessToken = jso_getToken("html-view-grades", apiScope);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", tokenInfoEndpoint + "?access_token=" + accessToken, true);
+        xhr.onload = function (e) {
+            var response = JSON.parse(xhr.responseText);
+            var hasEntitlement = response.attributes && response.attributes.eduPersonEntitlement && -1 !== response.attributes.eduPersonEntitlement.indexOf(entitlement);
+            callback(hasEntitlement);
+        }
+        xhr.send();
     }
 
-    function initPage() {
-        jso_configure({
-            "html-view-grades": {
-                client_id: apiClientId,
-                authorization: authorizeEndpoint
+    function getStudents(callback) {
+        var accessToken = jso_getToken("html-view-grades", apiScope);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", apiEndpoint + "/grades/", true);
+        xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.onload = function (e) {
+            var response = JSON.parse(xhr.responseText);
+            callback(response);
+        }
+        xhr.send();
+    }
+
+    function showGrades(userId, studentList) {
+        var accessToken = jso_getToken("html-view-grades", apiScope);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", apiEndpoint + "/grades/" + userId, true);
+        xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.onload = function (e) {
+            var response = JSON.parse(xhr.responseText);
+            var data = {
+                grades: response,
+            };
+            if (studentList) {
+                data.students = studentList;
+                data.selected = userId;
             }
-        });
+            $("div#container").html($("#gradeList").render(data));
+        }
+        xhr.send();
+    }
+
+    function performLogin() {
         jso_ensureTokens({
             "html-view-grades": apiScope
         });
+    }
 
-        checkEntitlement();
+    $(document).on("click", "#startAuthz", function (event) {
+        performLogin();
+        event.preventDefault();
+    });
+
+    $(document).on("click", "#noAuthz", function (event) {
+        alert("Without your explicit permission this application cannot work.");
+        event.preventDefault();
+    });
+
+    $(document).on("change", "select#studentList", function (event) {
+        $("select#studentList option:selected").each(function () {
+            var userId = $(this).val();
+            getStudents(function (studentList) {
+                showGrades(userId, studentList);
+            });
+        });
+        //event.preventDefault();
+    });
+
+    function initPage() {
+        var accessToken = jso_getToken("html-view-grades", apiScope);
+        if (!accessToken) {
+            // show login box
+            $("div#container").html($("#authzBox").render());
+        } else {
+            hasEntitlement("urn:x-oauth:entitlement:administration", function (hasEntitlement) {
+                if (hasEntitlement) {
+                    // get student names
+                    getStudents(function (studentList) {
+                        showGrades(studentList[0].id, studentList);
+                    });
+                } else {
+                    // show grades for current user
+                    showGrades("@me");
+                }
+            });
+        }
     }
 
     initPage();
