@@ -11,10 +11,10 @@ $(document).ready(function () {
     function hasEntitlement(entitlement, callback) {
         var accessToken = jso_getToken("html-view-grades", apiScope);
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", tokenInfoEndpoint + "?access_token=" + accessToken, true);
+        xhr.open("GET", introspectionEndpoint + "?token=" + accessToken, true);
         xhr.onload = function (e) {
             var response = JSON.parse(xhr.responseText);
-            var hasEntitlement = response.attributes && response.attributes.eduPersonEntitlement && -1 !== response.attributes.eduPersonEntitlement.indexOf(entitlement);
+            var hasEntitlement = response['x-entitlement'] && -1 !== response['x-entitlement'].indexOf(entitlement);
             callback(hasEntitlement);
         }
         xhr.send();
