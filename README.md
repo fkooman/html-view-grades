@@ -2,7 +2,7 @@
 
 ## Introduction
 This application makes it possible to view student grades together with the 
-[php-oauth-grades-rs](https://github.com/fkooman/php-oauth-grades-rs) project. 
+[php-grades-rs](https://github.com/fkooman/php-grades-rs) project. 
 It uses its API.
 
 ## Screenshots
@@ -35,14 +35,14 @@ This is the default configuration:
     var apiClientId           = 'html-view-grades';
     var authorizeEndpoint     = 'http://localhost/php-oauth/authorize.php';
     var introspectionEndpoint = 'http://localhost/php-oauth/introspect.php';
-    var apiEndpoint           = 'http://localhost/php-oauth-grades-rs/api.php';
+    var apiEndpoint           = 'http://localhost/php-grades-rs/api.php';
 
 For example, for your situation it may need to be like this:
 
     var apiClientId           = 'html-view-grades';
     var authorizeEndpoint     = 'https://www.example.org/php-oauth/authorize.php';
     var introspectionEndpoint = 'https://www.example.org/php-oauth/introspect.php';
-    var apiEndpoint           = 'https://www.example.org/php-oauth-grades-rs/api.php';
+    var apiEndpoint           = 'https://www.example.org/php-grades-rs/api.php';
 
 ## Client Registration
 Also, make sure that this client is registered in your OAuth server. The following
