@@ -32,17 +32,17 @@ resource server. This can be done by copying `config/config.js.default` to
 
 This is the default configuration:
 
-    var apiClientId        = 'html-view-grades';
-    var authorizeEndpoint  = 'http://localhost/php-oauth/authorize.php';
-    var attributesEndpoint = 'http://localhost/php-oauth/api.php/resource_owner/attributes';
-    var apiEndpoint        = 'http://localhost/php-oauth-grades-rs/api.php';
+    var apiClientId           = 'html-view-grades';
+    var authorizeEndpoint     = 'http://localhost/php-oauth/authorize.php';
+    var introspectionEndpoint = 'http://localhost/php-oauth/introspect.php';
+    var apiEndpoint           = 'http://localhost/php-oauth-grades-rs/api.php';
 
 For example, for your situation it may need to be like this:
 
-    var apiClientId        = 'html-view-grades';
-    var authorizeEndpoint  = 'https://www.example.org/php-oauth/authorize.php';
-    var attributesEndpoint = 'https://www.example.org/php-oauth/api.php/resource_owner/attributes';
-    var apiEndpoint        = 'https://www.example.org/php-oauth-grades-rs/api.php';
+    var apiClientId           = 'html-view-grades';
+    var authorizeEndpoint     = 'https://www.example.org/php-oauth/authorize.php';
+    var introspectionEndpoint = 'https://www.example.org/php-oauth/introspect.php';
+    var apiEndpoint           = 'https://www.example.org/php-oauth-grades-rs/api.php';
 
 ## Client Registration
 Also, make sure that this client is registered in your OAuth server. The following
