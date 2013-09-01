@@ -8,14 +8,14 @@ $(document).ready(function () {
         }
     });
 
-    function hasEntitlement(entitlement, callback) {
+    function isAdmin(callback) {
         var accessToken = jso_getToken("html-view-grades", apiScope);
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", introspectionEndpoint + "?token=" + accessToken, true);
+        xhr.open("GET", apiEndpoint + "/user_info", true);
+        xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.onload = function (e) {
             var response = JSON.parse(xhr.responseText);
-            var hasEntitlement = response['x-entitlement'] && -1 !== response['x-entitlement'].indexOf(entitlement);
-            callback(hasEntitlement);
+            callback(response['admin']);
         }
         xhr.send();
     }
@@ -84,8 +84,8 @@ $(document).ready(function () {
         } else {
             // an access token already exists, make sure it is still valid...
             performLogin();
-            hasEntitlement("urn:x-oauth:entitlement:administration", function (hasEntitlement) {
-                if (hasEntitlement) {
+            isAdmin(function(isAdmin) {
+                if (isAdmin) {
                     // get student names
                     getStudents(function (studentList) {
                         // show grades for the first user
