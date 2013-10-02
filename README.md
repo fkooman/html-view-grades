@@ -35,14 +35,14 @@ This is the default configuration:
     var apiClientId           = 'html-view-grades';
     var authorizeEndpoint     = 'http://localhost/php-oauth/authorize.php';
     var introspectionEndpoint = 'http://localhost/php-oauth/introspect.php';
-    var apiEndpoint           = 'http://localhost/php-grades-rs/api.php';
+    var apiEndpoint           = 'http://localhost/php-grades-rs/';
 
 For example, for your situation it may need to be like this:
 
     var apiClientId           = 'html-view-grades';
     var authorizeEndpoint     = 'https://www.example.org/php-oauth/authorize.php';
     var introspectionEndpoint = 'https://www.example.org/php-oauth/introspect.php';
-    var apiEndpoint           = 'https://www.example.org/php-grades-rs/api.php';
+    var apiEndpoint           = 'https://www.example.org/php-grades-rs/';
 
 ## Client Registration
 Also, make sure that this client is registered in your OAuth server. The following
