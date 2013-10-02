@@ -10,20 +10,10 @@ It uses its API.
 
 ![html-view-grades-teacher](https://github.com/fkooman/html-view-grades/raw/master/docs/html-view-grades-teacher-screenshot.png)
 
-## Installation
-This application depends on the following components:
+# Installation
+You can use [Bower](http://bower.io) to install the dependencies.
 
-* jQuery
-* JSrender (JavaScript Template Rendering for jQuery)
-* JSO (JavaScript OAuth 2 client)
-* Bootstrap CSS
-
-It can easily be installed by running the following script:
-
-    $ sh docs/install_dependencies.sh
-
-This will download the latest version of those components and everything will
-immediately work.
+    $ bower install
 
 ## Configuration
 You need to configure the application to point to your OAuth server and 
@@ -34,39 +24,21 @@ This is the default configuration:
 
     var apiClientId           = 'html-view-grades';
     var authorizeEndpoint     = 'http://localhost/php-oauth/authorize.php';
-    var introspectionEndpoint = 'http://localhost/php-oauth/introspect.php';
     var apiEndpoint           = 'http://localhost/php-grades-rs/';
 
 For example, for your situation it may need to be like this:
 
     var apiClientId           = 'html-view-grades';
     var authorizeEndpoint     = 'https://www.example.org/php-oauth/authorize.php';
-    var introspectionEndpoint = 'https://www.example.org/php-oauth/introspect.php';
     var apiEndpoint           = 'https://www.example.org/php-grades-rs/';
 
-## Client Registration
-Also, make sure that this client is registered in your OAuth server. The following
-information will be relevant:
+# Client Registration
+Also, make sure that this client is registered in your OAuth server. The 
+following information could be relevant:
 
-<table>
-  <tr>
-    <th>Identifier</th><td>html-view-grades</td>
-  </tr>
-  <tr>
-    <th>Name</th><td>View Grades</td>
-  </tr>
-  <tr>
-    <th>Description</th><td>Application for students and teachers to view grades.</td>
-  </tr>
-  <tr>
-    <th>Profile</th><td>User-agent-based Application</td>
-  </tr>
-  <tr>
-    <th>Secret</th><td><em>NONE</em></td>
-  </tr>
-  <tr>
-    <th>Redirect URI</th><td>https://www.example.org/html-view-grades/index.html</td>
-  </tr>
-</table>
-
-That should be all!
+* **Identifier**: html-view-grades
+* **Name**: View Grades
+* **Description**: Application for students and teachers to view grades.
+* **Profile**: User-agent-based Application
+* **Secret**: _NONE_
+* **Redirect URI**: https://www.example.org/html-view-grades/index.html
